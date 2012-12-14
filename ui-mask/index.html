@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" href="../css/core.css">
+
+	<script type="text/javascript" src="../js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.maskedinput-1.3-modified.js"></script>
+	<script type="text/javascript" src="../js/date.js"></script>
+	
+    <script type="text/javascript" src="../js/angular-1.0.1.min.js"></script>
+    
+	<script type="text/javascript" src="ui-mask.js"></script>
+
+    <style>
+        form {
+            padding: 20px;
+        }
+    </style>
+
+    <script type="text/javascript">
+        angular.element(document).ready(function() {
+            angular.bootstrap(document, ['MaskDirectiveModule']);
+        });
+
+        function TestController($scope) {
+            $scope.data = {
+                date1: '',
+				doc_id: '',
+				digests: '',
+				strong_digests: '',
+				symbols: ''
+            }
+        };
+    </script>
+</head>
+<body ng-controller="TestController">
+	<form>
+		<div class="control-group">
+			<label class="control-label" for="date1">Date with mask</label>
+			<div class="controls">
+				<input id="date1" type='text' name="date1"
+					ng-model='data.date1'
+					required 
+					placeholder="yyyy-MM-dd"
+					ui-mask="'9999-99-99'" mask-all="true" mask-placeholder="'yyyy-MM-dd'">
+			</div>
+			<span> Inputed date: {{ data.date1.toString() }} </span>
+		</div>
+		
+		<hr>
+				
+		<div class="control-group">
+			<label class="control-label" for="doc_id">Document id in format '99aa999999'</label>
+			<div class="controls">
+				<input id="doc_id" type='text' name="doc_id"
+				   ng-model="data.doc_id"
+				   required
+				   placeholder="99aa999999"
+				   ui-mask="'99aa999999'" mask-all="true">
+			</div>
+			<span> Inputed id: {{ data.doc_id }} </span>
+		</div>
+		
+		<hr>
+		
+		<div class="control-group">
+			<label class="control-label" for="digests">Only digests but not more than nine</label>
+			<div class="controls">
+				<input id="digests" type='text' name="digests"
+				   ng-model="data.digests"
+				   required
+				   placeholder="999999999"
+				   ui-mask="'999999999'" mask-all="false">
+			</div>
+			<span> Inputed id: {{ data.digests }} </span>
+		</div>
+		
+		<hr>
+		
+		<div class="control-group">
+			<label class="control-label" for="strong_digests">Strongly nine digests</label>
+			<div class="controls">
+				<input id="strong_digests" type='text' name="strong_digests"
+				   ng-model="data.strong_digests"
+				   required
+				   placeholder="999999999"
+				   ui-mask="'999999999'" mask-all="true" mask-placeholder="'_________'">
+			</div>
+			<span> Inputed id: {{ data.strong_digests }} </span>
+		</div>
+		
+		<hr>
+		
+		<div class="control-group">
+			<label class="control-label" for="symbols">One to nine digests and letters</label>
+			<div class="controls">
+				<input id="symbols" type='text' name="symbols"
+				   ng-model="data.symbols"
+				   required
+				   placeholder="*********"
+				   ui-mask="'*********'" mask-all="false">
+			</div>
+			<span> Inputed id: {{ data.symbols }} </span>
+		</div>
+		
+	</form>
+</body>
+</html>

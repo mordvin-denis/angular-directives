@@ -1,0 +1,6 @@
+
+
+/*for angular-validation*/
+input.ng-invalid.ng-dirty {
+    background: #FDB3B3 url(img/invalid_input.png) 50% 50% repeat-x !important;
+}
