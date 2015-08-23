@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html ng-app="AutoFormSample">
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" href="../font-awesome/css/font-awesome.css">
+	<link rel="stylesheet" href="../css/core.css">
+
+	<script type="text/javascript" src="../js/jquery.js"></script>
+	<script type="text/javascript" src="../js/lodash.js"></script>
+    <script type="text/javascript" src="../js/angular.js"></script>
+	<script type="text/javascript" src="ui-auto-form.js"></script>
+
+    <style>
+        form {
+            padding: 20px;
+        }
+    </style>
+
+    <script type="text/javascript">
+		angular.module('AutoFormSample', ['AutoFormModule'])
+			.controller('AutoFormSampleCtrl', function ($scope) {
+				var flightFromSettings = {
+					params: [
+						{"type": "text", "name": "from", "view_name": "From", "required": true, "placeholder": "required", pattern: '^[A-Za-z- ]+$'},
+						{"type": "text", "name": "to", "view_name": "To", "required": true, "placeholder": "required", pattern: '^[A-Za-z- ]+$'},
+						{"type": "choice", "name": "type", "view_name": "Type", "required": true,
+							"values": [{"name": "One way", "value": "one_way"}, {"name": "Two way", "value": "two_way"}, ], },
+						{"type": "number", "name": "count", "view_name": "Count", "required": true, "placeholder": "count of passengers", "default": 1},
+					]
+				};
+				
+				var loginFromSettings = {
+					params: [
+						{"type": "text", "name": "login", "view_name": "Login", "required": true, "placeholder": "required"},
+						{"type": "password", "name": "password", "view_name": "Password", "required": true, "placeholder": "required"},
+					]
+				};
+				
+				var requestsFromSettings = {
+					params: [
+						{"type": "multichoice", "name": "protocols", "view_name": "Protocols", "required": true, 
+						 "values": [{"name": "HTTP", "value": "http"},
+								    {"name": "SSH", "value": "ssh"}],
+						},
+						
+						{"type": "params_list",
+						 "view_name": "Addresses settings", 
+						 "name": "points",
+						 "params": [{"type": "text", "view_name": "Addresses", "name": "addresses"},
+						 		    {"type": "params_list", "view_name": "Authentification", "name": "auth",
+									 "required": false, "params": [{
+											"view_name": "Login",
+											"required": false,
+											"type": "text",
+											"name": "login"
+										}, {
+											"view_name": "Password",
+											"required": false,
+											"type": "password",
+											"name": "password"
+										}],
+									}],
+						}
+					],
+					depend_param_groups: [{
+						"depend_on": "protocols",
+						"depend_value": "http",
+						
+						"params": [{
+							"type": "choice",
+							"view_name": "Method",
+							"required": true,
+							"values": [{
+								"name": "GET",
+								"value": "get"
+							},
+							{
+								"name": "POST",
+								"value": "post"
+							}],
+							"name": "http_method"
+						},
+						{
+							"view_name": "Request parameters",
+							"required": false,
+							"type": "text",
+							"name": "http_params"
+						}],
+						"group_header": "Specific HTTP params"
+					},
+					{
+						"depend_on": "protocols",
+						"depend_value": "ssh",
+						
+						"params": [{
+							"type": "file",
+							"view_name": "Key file",
+							"required": false,
+							"name": "key_file"
+						}],
+					}
+					]
+				};
+				
+				$scope.paramsVariants = [
+					{name: 'Flight params', value: flightFromSettings},
+					{name: 'Login params', value: loginFromSettings},
+					{name: 'Requests params', value: requestsFromSettings},
+				];
+				
+				$scope.paramsIndex = 0;
+				
+				$scope.result = {};
+			});
+    </script>
+</head>
+<body ng-controller="AutoFormSampleCtrl">
+	<div class="container">
+		<div class="form-group">
+			<label for="paramsType" class="col-sm-3 control-label">Select params variants</label>
+			<div class="col-sm-5">
+				<select name="paramsType" id="paramsType"
+						class="form-control" ng-model="paramsIndex">
+					<option ng-repeat="v in paramsVariants"
+							value={{$index}}>{{ v.name }}
+					</option>
+				</select>
+			</div>
+		</div>
+					
+		<ui-auto-form ng-model="result" settings="paramsVariants[paramsIndex].value"></ui-auto-form>
+		
+		<strong>Params:</strong> {{ paramsVariants[paramsIndex].value }} <br><br>
+		<strong>Result:</strong> {{ result }} <br>
+	</div>
+</body>
+</html>
