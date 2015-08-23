@@ -118,6 +118,19 @@
     </script>
 </head>
 <body ng-controller="AutoFormSampleCtrl">
+	
+	<div class="alert alert-success" >
+		Auto-form directive can be useful for making params form for several params group. May be different commands with different params.
+		We can get json params from server with API. JSON params may depend on user or something else.
+	</div>
+	<div class="alert alert-warning" >
+		Controls for params are specific and we don't have many controls. Directive can be improved.
+	</div>
+	<div class="alert alert-success" >
+		Params are: text, number, password, file, choice, multichoice, params_list (see Requests params example).
+		Using depend_param_groups we can make dependence params groups (see Requests params example)
+	</div>
+		
 	<div class="container">
 		<div class="form-group">
 			<label for="paramsType" class="col-sm-3 control-label">Select params variants</label>
